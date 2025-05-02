@@ -14,6 +14,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { products } from '@/data/productData'
 import { LoadingState } from "@/components/ui/loading-state"
 import { NoProducts } from "@/components/ui/no-products"
+import { FeaturedProductsSection } from '@/components/product/featured-products-section'
 
 const categories = [
   { id: '1', name: 'Notebooks', slug: 'notebooks' },
@@ -179,6 +180,7 @@ export default function ProductsPage() {
 
   return (
     <div className="py-12">
+      <FeaturedProductsSection />
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">
           <div className="space-y-2">

@@ -1,32 +1,37 @@
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
-import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
 
-// ESM specific features
-const __filename = fileURLToPath(import.meta.url);
+dotenv.config();
 
 const prisma = new PrismaClient();
 
-const main = async () => {
-  const hashedPassword = await hash('admin123', 12); // Change this password as needed
+async function main() {
+  const username = process.env.ADMIN_USERNAME || 'admin';
+  const rawPassword = process.env.ADMIN_PASSWORD;
+
+  if (!rawPassword) {
+    console.error('❌ ADMIN_PASSWORD is not set in .env');
+    process.exit(1);
+  }
+
+  const hashedPassword = await hash(rawPassword, 12);
 
   const admin = await prisma.admin.upsert({
-    where: { username: 'admin' },
+    where: { username },
     update: {},
     create: {
-      username: 'admin',
+      username,
       password: hashedPassword,
     },
   });
 
-  console.log('Admin user created:', admin);
-};
+  console.log(`✅ Admin user "${username}" is ready.`);
+}
 
 main()
   .catch((e) => {
-    console.error(e);
+    console.error('❌ Seeding failed:', e);
     process.exit(1);
   })
-  .finally(async () => {
-    await prisma.$disconnect();
-  }); 
+  .finally(() => prisma.$disconnect());

@@ -1,73 +1,43 @@
 import { NextResponse } from 'next/server';
-import prisma from '@/lib/prisma';
+import { prisma } from '@/lib/prisma'; // Adjust the import path based on your project structure
 
+// GET: Fetch all products
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
       include: {
-        category: true,
+        category: true, // Adjust based on your schema relationships
       },
     });
     return NextResponse.json(products);
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to fetch products' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
   }
 }
 
-export async function POST(request: Request) {
+// POST: Create a new product
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-    const {
-      name,
-      slug,
-      description,
-      price,
-      images,
-      size,
-      colors,
-      stock,
-      featured,
-      categoryId,
-      scents,
-      fragrances,
-      flavors,
-      dimensions,
-      material,
-      weight,
-    } = body;
+    const body = await req.json();
+    const { name, price, categoryId } = body; // Adjust fields based on your schema
 
-    const product = await prisma.product.create({
+    if (!name || !price || !categoryId) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+    }
+
+    const newProduct = await prisma.product.create({
       data: {
         name,
-        slug,
-        description,
         price,
-        images,
-        size,
-        colors,
-        stock,
-        featured,
-        categoryId,
-        scents,
-        fragrances,
-        flavors,
-        dimensions,
-        material,
-        weight,
-      },
-      include: {
-        category: true,
+        categoryId, // Adjust based on your schema
+        slug: name.toLowerCase().replace(/\s+/g, '-'), // Example slug generation
+        description: body.description || '', // Provide a default or required description
+        category: { connect: { id: categoryId } }, // Adjust based on your schema relationships
       },
     });
 
-    return NextResponse.json(product);
+    return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    return NextResponse.json(
-      { error: 'Failed to create product' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
-} 
+}

@@ -1,38 +1,30 @@
-import 'dotenv/config'
-import { supabaseClient } from '../lib/supabase.js'
-import { cloudinary } from '../lib/cloudinary.js'
+import { imagekit } from '../lib/imagekit.js'
+import { PrismaClient } from '@prisma/client'
 
-async function testConnections() {
+const prisma = new PrismaClient()
+
+async function main() {
   try {
-    // Test Supabase connection
-    const { data: supabaseData, error: supabaseError } = await supabaseClient
-      .from('products')
-      .select('*')
-      .limit(1)
+    // Test Database connection
+    await prisma.$connect()
+    console.log('Database connection successful!')
 
-    if (supabaseError) {
-      console.error('Supabase connection error:', supabaseError)
-    } else {
-      console.log('Supabase connection successful!')
-    }
-
-    // Test Cloudinary connection
+    // Test ImageKit connection
     try {
-      const result = await cloudinary.api.ping()
-      console.log('Cloudinary connection successful!', result)
-    } catch (cloudinaryError) {
-      console.error('Cloudinary connection error:', cloudinaryError)
+      const result = await imagekit.listFiles({
+        limit: 1
+      })
+      console.log('ImageKit connection successful!', result)
+    } catch (imagekitError) {
+      console.error('ImageKit connection error:', imagekitError)
     }
 
+    await prisma.$disconnect()
   } catch (error) {
-    console.error('General error:', error)
+    console.error('Error:', error)
+    await prisma.$disconnect()
+    process.exit(1)
   }
 }
 
-// Run the tests
-testConnections()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error)
-    process.exit(1)
-  }) 
+main() 

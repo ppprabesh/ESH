@@ -16,7 +16,7 @@ An e-commerce platform for authentic Nepali souvenirs and handicrafts.
 - Tailwind CSS
 - Prisma (Database ORM)
 - JWT Authentication
-- Cloudinary (Image Storage)
+- ImageKit.io (Image Storage)
 
 ## Getting Started
 
@@ -47,9 +47,9 @@ npm install
 ```env
 DATABASE_URL="your_database_url"
 JWT_SECRET="your_jwt_secret"
-CLOUDINARY_CLOUD_NAME="your_cloudinary_cloud_name"
-CLOUDINARY_API_KEY="your_cloudinary_api_key"
-CLOUDINARY_API_SECRET="your_cloudinary_api_secret"
+NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY="your_imagekit_public_key"
+IMAGEKIT_PRIVATE_KEY="your_imagekit_private_key"
+NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT="your_imagekit_url_endpoint"
 ```
 
 4. Set up the database:

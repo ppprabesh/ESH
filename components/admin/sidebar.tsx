@@ -48,9 +48,9 @@ export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
 
   return (
-    <div className={cn("flex flex-col h-full py-4 border-r", className)}>
+    <div className={cn("flex flex-col h-full py-4 border-r border-gray-200", className)}>
       <div className="px-4 mb-6">
-        <Link href="/admin" className="flex items-center gap-2 font-semibold text-lg">
+        <Link href="/admin" className="flex items-center gap-2 font-semibold text-lg text-gray-900">
           <ShoppingBag className="h-6 w-6" />
           <span>Admin Panel</span>
         </Link>
@@ -65,7 +65,7 @@ export function Sidebar({ className }: SidebarProps) {
               variant={isActive ? "secondary" : "ghost"}
               className={cn(
                 "w-full justify-start gap-2 mb-1",
-                !isActive && "hover:bg-muted"
+                !isActive && "hover:bg-gray-100"
               )}
               asChild
             >
@@ -83,7 +83,7 @@ export function Sidebar({ className }: SidebarProps) {
       <div className="px-2 space-y-1">
         <Button
           variant="ghost"
-          className="w-full justify-start gap-2 hover:bg-muted"
+          className="w-full justify-start gap-2 hover:bg-gray-100"
           asChild
         >
           <Link href="/">
@@ -96,7 +96,7 @@ export function Sidebar({ className }: SidebarProps) {
           <Button
             type="submit"
             variant="ghost"
-            className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+            className="w-full justify-start gap-2 text-gray-900 hover:bg-gray-100"
           >
             <LogOut className="h-5 w-5" />
             Sign Out
