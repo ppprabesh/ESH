@@ -32,19 +32,18 @@ CREATE TABLE IF NOT EXISTS "Product" (
     "size" TEXT[] NOT NULL DEFAULT '{}',
     "colors" TEXT[] NOT NULL DEFAULT '{}',
     "featured" BOOLEAN NOT NULL DEFAULT false,
-    "material" TEXT,
-    "weight" DOUBLE PRECISION,
-    -- Category-specific attributes
-    "scents" TEXT[] NOT NULL DEFAULT '{}',
-    "fragrances" TEXT[] NOT NULL DEFAULT '{}',
-    "flavors" TEXT[] NOT NULL DEFAULT '{}',
-    "dimensions" TEXT,
+
+    -- New field replacing removed ones
+    "additionalInfo" TEXT,
+
     -- Relations
     "categoryId" TEXT NOT NULL REFERENCES "Category"("id") ON DELETE RESTRICT,
+
     -- Timestamps
     "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
 
 -- Create indexes
 CREATE INDEX IF NOT EXISTS "Product_slug_idx" ON "Product"("slug");

@@ -1,14 +1,9 @@
-import { HeroSection } from '@/components/home/hero-section';
+import { Certificates } from '@/components/home/certificates';
 import { FeaturedProducts } from '@/components/home/featured-products';
-import { CategoryShowcase } from '@/components/home/category-showcase';
+import { HeroSection } from '@/components/home/hero-section';
+import Highlights from '@/components/home/highlights';
 import WeSellSlider from '@/components/WeSell';
 import YoutubeHomepage from '@/components/YoutubeHomepage';
-import { Certificates } from '@/components/home/certificates';
-import Highlights from '@/components/home/highlights';
-
-
-
-
 
 
 export default function Home() {

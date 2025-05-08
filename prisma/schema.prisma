@@ -1,14 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+  // output   = "./node_modules/@prisma/client"
+}
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Admin {
@@ -20,52 +18,36 @@ model Admin {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String
-  slug        String   @unique
-  description String
-  price       Float
-  images      String[]
-  size        String[]
-  colors      String[]
-  featured    Boolean  @default(false)
-  material    String?
-  weight      Float?
+  id             String   @id @default(cuid())
+  name           String
+  slug           String   @unique
+  description    String
+  price          Float
+  images         String[]
+  size           String[]
+  colors         String[]
+  featured       Boolean  @default(false)
+  additionalInfo String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  // Category-specific attributes
-  scents     String[] @default([]) // For candles
-  fragrances String[] @default([]) // For soaps
-  flavors    String[] @default([]) // For oils
-  dimensions String? // For statues
-
-  // Relations
-  category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
 
-  // Timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Indexes
   @@index([slug])
   @@index([categoryId])
   @@index([featured])
 }
 
 model Category {
-  id          String  @id @default(cuid())
-  name        String  @unique
-  slug        String  @unique
+  id          String    @id @default(cuid())
+  name        String    @unique
+  slug        String    @unique
   description String?
   image       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
 
-  // Relations
-  products Product[]
-
-  // Timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Indexes
   @@index([slug])
 }

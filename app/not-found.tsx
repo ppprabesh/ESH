@@ -20,7 +20,7 @@ export default function NotFound() {
             Page Not Found
           </h2>
           <p className="text-lg text-[#000080]/70 max-w-md mx-auto">
-            Oops! The page you're looking for doesn't exist or has been moved.
+            Oops! The page you&apos;re looking for doesn&apos;t exist or has been moved.
           </p>
         </div>
 
@@ -32,7 +32,7 @@ export default function NotFound() {
             Return Home
           </Link>
           <p className="text-sm text-[#000080]/60">
-            Or try searching for what you're looking for
+            Or try searching for what you&apos;re looking for
           </p>
         </div>
       </div>
