@@ -39,7 +39,7 @@ export function ProductForm({ initialData, isEdit }: ProductFormProps) {
   const [colors, setColors] = useState<string[]>(initialData?.colors || []);
   const [featured, setFeatured] = useState(initialData?.featured || false);
   const [additionalInfo, setAdditionalInfo] = useState(initialData?.additionalInfo || '');
-  const [category, setCategory] = useState(initialData?.category?.name || '');
+  const [category, setCategory] = useState(initialData?.category?.slug || '');
   const [categories, setCategories] = useState<any[]>([]);
 
   useEffect(() => {
@@ -60,12 +60,12 @@ export function ProductForm({ initialData, isEdit }: ProductFormProps) {
       slug,
       description,
       price: parseFloat(price),
-      images,  // Send the image URLs from ImageKit
+      images,
       size,
       colors,
       featured,
       additionalInfo,
-      category,
+      category, // Send category slug or name (not ID)
     };
 
     const url = isEdit ? `/api/product/${initialData?.id}` : '/api/product';
@@ -99,7 +99,7 @@ export function ProductForm({ initialData, isEdit }: ProductFormProps) {
 
       for (const file of files) {
         try {
-          const imageUrl = await uploadImage(file); // Upload to ImageKit
+          const imageUrl = await uploadImage(file);
           uploadedImages.push(imageUrl);
         } catch (error) {
           console.error('Error uploading image:', error);
@@ -107,12 +107,12 @@ export function ProductForm({ initialData, isEdit }: ProductFormProps) {
         }
       }
 
-      setImages((prev) => [...prev, ...uploadedImages]); // Add image URLs to state
+      setImages((prev) => [...prev, ...uploadedImages]);
     }
   };
 
   const removeImage = (image: string) => {
-    setImages(images.filter((img) => img !== image)); // Remove image from state
+    setImages(images.filter((img) => img !== image));
   };
 
   const handleSizeChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -190,6 +190,24 @@ export function ProductForm({ initialData, isEdit }: ProductFormProps) {
       </div>
 
       <div>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3"
+          required
+        >
+          <option value="">Select a category</option>
+          {categories.map((cat: any) => (
+            <option key={cat.id} value={cat.slug}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
         <label htmlFor="images" className="block text-sm font-medium text-gray-700">Upload Images</label>
         <input
           type="file"
@@ -222,7 +240,63 @@ export function ProductForm({ initialData, isEdit }: ProductFormProps) {
         </div>
       </div>
 
-      {/* Rest of the form for sizes, colors, and other fields */}
+      <div>
+        <label htmlFor="size" className="block text-sm font-medium text-gray-700">Sizes</label>
+        <input
+          type="text"
+          id="size"
+          onKeyDown={handleSizeChange}
+          placeholder="Press Enter to add"
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3"
+        />
+        <div className="flex flex-wrap gap-2 mt-2">
+          {size.map((s, idx) => (
+            <span key={idx} className="bg-gray-200 px-2 py-1 rounded">
+              {s} <button type="button" onClick={() => removeSize(s)}>x</button>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="colors" className="block text-sm font-medium text-gray-700">Colors</label>
+        <input
+          type="text"
+          id="colors"
+          onKeyDown={handleColorChange}
+          placeholder="Press Enter to add"
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3"
+        />
+        <div className="flex flex-wrap gap-2 mt-2">
+          {colors.map((c, idx) => (
+            <span key={idx} className="bg-gray-200 px-2 py-1 rounded">
+              {c} <button type="button" onClick={() => removeColor(c)}>x</button>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          id="featured"
+          checked={featured}
+          onChange={(e) => setFeatured(e.target.checked)}
+          className="mr-2"
+        />
+        <label htmlFor="featured" className="text-sm font-medium text-gray-700">Featured Product</label>
+      </div>
+
+      <div>
+        <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">Additional Info</label>
+        <textarea
+          id="additionalInfo"
+          value={additionalInfo}
+          onChange={(e) => setAdditionalInfo(e.target.value)}
+          className="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-3"
+        />
+      </div>
+
       <div className="flex items-center space-x-4">
         <button type="submit" className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
           {isEdit ? 'Update Product' : 'Add Product'}

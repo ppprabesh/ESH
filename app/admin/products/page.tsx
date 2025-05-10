@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/lib/auth';
-import { Pencil, Trash } from 'lucide-react'; 
-import Image from 'next/image';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/lib/auth";
+import { Pencil, Trash } from "lucide-react";
+import Image from "next/image";
 
 export default function ProductsPage() {
   const router = useRouter();
@@ -12,21 +12,23 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]); // Fetch categories to display their names
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);  // Keep track of the product to be deleted
+  const [error, setError] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null); // Track product to be deleted
+  const [needsRefetch, setNeedsRefetch] = useState(false); // Flag to trigger refetch after edit
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/product');
+        const response = await fetch("/api/product");
         if (!response.ok) {
-          throw new Error('Failed to fetch products');
+          throw new Error("Failed to fetch products");
         }
         const data = await response.json();
         setProducts(data);
+        console.log(data);
       } catch (err) {
-        setError('Failed to load products');
-        console.error('Error fetching products:', err);
+        setError("Failed to load products");
+        console.error("Error fetching products:", err);
       } finally {
         setLoading(false);
       }
@@ -34,37 +36,43 @@ export default function ProductsPage() {
 
     const fetchCategories = async () => {
       try {
-        const response = await fetch('/api/categories');
+        const response = await fetch("/api/categories");
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error("Failed to fetch categories");
         }
         const data = await response.json();
-        setCategories(data); // Store categories for lookup
+        setCategories(data);
       } catch (err) {
-        console.error('Error fetching categories:', err);
+        console.error("Error fetching categories:", err);
       }
     };
 
     fetchProducts();
     fetchCategories();
-  }, []);
+  }, [needsRefetch]); // Refetch products when needsRefetch changes
 
   const handleDelete = async (id: string) => {
     try {
       const response = await fetch(`/api/product/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete product');
+        throw new Error("Failed to delete product");
       }
 
       setProducts(products.filter((product) => product.id !== id));
       setConfirmDelete(null); // Close the confirmation modal
     } catch (err) {
-      setError('Failed to delete product');
-      console.error('Error deleting product:', err);
+      setError("Failed to delete product");
+      console.error("Error deleting product:", err);
     }
+  };
+
+  const handleEdit = async (id: string) => {
+    // After edit, set needsRefetch to true to reload the products list
+    setNeedsRefetch(true);
+    router.push(`/admin/products/${id}/edit`);
   };
 
   if (!isAuthenticated) {
@@ -87,7 +95,7 @@ export default function ProductsPage() {
         <div className="mt-4">
           <button
             type="button"
-            onClick={() => router.push('/admin/products/add')}
+            onClick={() => router.push("/admin/products/add")}
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
           >
             Add Product
@@ -107,7 +115,7 @@ export default function ProductsPage() {
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
             type="button"
-            onClick={() => router.push('/admin/products/add')}
+            onClick={() => router.push("/admin/products/add")}
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
           >
             Add Product
@@ -181,21 +189,25 @@ export default function ProductsPage() {
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {productCategory ? productCategory.name : 'Unknown'}
-                        </td>
+  {/* Find category name by categoryId */}
+  {product.categoryId
+    ? categories.find((category) => category.id === product.categoryId)?.name || "Unknown"
+    : "Unknown"}
+</td>
+
+
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           ${product.price}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                           <button
-                            onClick={() =>
-                              router.push(`/admin/products/${product.id}/edit`)}
+                            onClick={() => handleEdit(product.id)} // Trigger edit handler
                             className="text-indigo-600 hover:text-indigo-900 mr-4"
                           >
                             <Pencil className="h-5 w-5" />
                           </button>
                           <button
-                            onClick={() => setConfirmDelete(product.id)} // Open the delete confirmation modal
+                            onClick={() => setConfirmDelete(product.id)} // Open delete confirmation modal
                             className="text-red-600 hover:text-red-900"
                           >
                             <Trash className="h-5 w-5" />
@@ -215,24 +227,24 @@ export default function ProductsPage() {
       {confirmDelete && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-          onClick={() => setConfirmDelete(null)} // Close the modal if clicked outside
+          onClick={() => setConfirmDelete(null)} 
         >
           <div
             className="bg-white p-8 rounded-md shadow-lg"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            onClick={(e) => e.stopPropagation()} 
           >
             <h3 className="text-lg font-semibold text-gray-900">
               Are you sure you want to delete this product?
             </h3>
             <div className="mt-4 flex space-x-4">
               <button
-                onClick={() => handleDelete(confirmDelete)} // Perform the delete action
+                onClick={() => handleDelete(confirmDelete)} // Perform delete action
                 className="px-4 py-2 text-white bg-red-600 rounded-md"
               >
                 Yes, Delete
               </button>
               <button
-                onClick={() => setConfirmDelete(null)} // Close the modal without deleting
+                onClick={() => setConfirmDelete(null)} // Close modal without deleting
                 className="px-4 py-2 text-white bg-gray-600 rounded-md"
               >
                 Cancel
