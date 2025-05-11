@@ -1,3 +1,4 @@
+import CardCategories from '@/components/home/card-categories';
 import { Certificates } from '@/components/home/certificates';
 import { FeaturedProducts } from '@/components/home/featured-products';
 import { HeroSection } from '@/components/home/hero-section';
@@ -12,6 +13,7 @@ export default function Home() {
       <HeroSection />
       <FeaturedProducts />
       <WeSellSlider/>
+      <CardCategories/>
       <YoutubeHomepage />
       <Highlights />
       <Certificates />
