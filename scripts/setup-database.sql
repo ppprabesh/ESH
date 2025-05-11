@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS "Admin" (
     "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Category table
+-- Category table (name is no longer unique)
 CREATE TABLE IF NOT EXISTS "Category" (
     "id" TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
-    "name" TEXT UNIQUE NOT NULL,
+    "name" TEXT NOT NULL, -- Removed UNIQUE constraint
     "slug" TEXT UNIQUE NOT NULL,
     "description" TEXT,
     "image" TEXT,
@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS "Product" (
     "createdAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
 
 -- Create indexes
 CREATE INDEX IF NOT EXISTS "Product_slug_idx" ON "Product"("slug");
