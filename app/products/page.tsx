@@ -94,7 +94,7 @@ export default function ProductsPage() {
 
               <motion.img
                 layoutId={`image-${activeProduct.slug}-${id}`}
-                className="w-full h-64 object-cover rounded-lg shadow-md"
+                className="w-full h-64 object-contain rounded-lg shadow-md"
                 src={activeProduct.images[0] || "/images/placeholder.jpg"}
                 alt={activeProduct.name}
               />
