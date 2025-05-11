@@ -33,11 +33,6 @@ const navItems = [
     href: '/admin/categories',
     icon: Boxes,
   },
-  {
-    title: 'Store Settings',
-    href: '/admin/settings',
-    icon: Settings,
-  },
 ]
 
 interface SidebarProps {
@@ -48,7 +43,7 @@ export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
 
   return (
-    <div className={cn("flex flex-col h-full py-4 border-r border-gray-200", className)}>
+    <div className={cn("flex flex-col h-full py-4 ", className)}>
       <div className="px-4 mb-6">
         <Link href="/admin" className="flex items-center gap-2 font-semibold text-lg text-gray-900">
           <ShoppingBag className="h-6 w-6" />
@@ -86,22 +81,8 @@ export function Sidebar({ className }: SidebarProps) {
           className="w-full justify-start gap-2 hover:bg-gray-100"
           asChild
         >
-          <Link href="/">
-            <Layout className="h-5 w-5" />
-            View Store
-          </Link>
+
         </Button>
-        
-        <form action="/api/auth/signout" method="post">
-          <Button
-            type="submit"
-            variant="ghost"
-            className="w-full justify-start gap-2 text-gray-900 hover:bg-gray-100"
-          >
-            <LogOut className="h-5 w-5" />
-            Sign Out
-          </Button>
-        </form>
       </div>
     </div>
   )

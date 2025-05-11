@@ -1,10 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Overview } from '@/components/admin/overview';
-import { Package, ShoppingBag, Users, CreditCard, AreaChart, PieChart, BarChart } from 'lucide-react';
 
 interface AdminDashboardProps {
   products: any[];
@@ -39,7 +34,6 @@ export function AdminDashboard({ products, categories }: AdminDashboardProps) {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
@@ -47,7 +41,7 @@ export function AdminDashboard({ products, categories }: AdminDashboardProps) {
                 <tr key={product.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.category?.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${product.price}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rs.{product.price}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.stock || 'N/A'}</td>
                 </tr>
               ))}

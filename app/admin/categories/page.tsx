@@ -36,7 +36,7 @@ export default function CategoriesPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      const response = await fetch(`/api/admin/categories/${id}`, {
+      const response = await fetch(`/api/categories/${id}`, {
         method: 'DELETE',
       });
 
@@ -135,7 +135,7 @@ export default function CategoriesPage() {
                       scope="col"
                       className="relative py-3.5 pl-3 pr-4 sm:pr-6"
                     >
-                      <span className="sr-only">Actions</span>
+                      <span >Actions</span>
                     </th>
                   </tr>
                 </thead>
@@ -157,20 +157,23 @@ export default function CategoriesPage() {
                       <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                         {category.slug}
                       </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <button
-                          onClick={() => router.push(`/admin/categories/${category.id}/edit`)}
-                          className="text-indigo-600 hover:text-indigo-900 mr-4"
-                        >
-                          <Pencil className="h-5 w-5" />
-                        </button>
-                        <button
-                          onClick={() => setConfirmDelete(category.id)}
-                          className="text-red-600 hover:text-red-900"
-                        >
-                          <Trash className="h-5 w-5" />
-                        </button>
-                      </td>
+                     <td className="relative flex justify-center items-center whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+  <button
+    onClick={() => router.push(`/admin/categories/${category.id}/edit`)}
+    className="text-indigo-600 hover:text-indigo-900 mr-4 flex items-center gap-2"
+  >
+    <Pencil className="h-5 w-5" />
+    <span>Edit</span>
+  </button>
+  <button
+    onClick={() => setConfirmDelete(category.id)}
+    className="text-red-600 hover:text-red-900 flex items-center gap-2"
+  >
+    <Trash className="h-5 w-5" />
+    <span>Delete</span>
+  </button>
+</td>
+
                     </tr>
                   ))}
                 </tbody>

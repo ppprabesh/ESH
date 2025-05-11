@@ -158,14 +158,14 @@ export default function ProductsPage() {
                       scope="col"
                       className="relative py-3.5 pl-3 pr-4 sm:pr-6"
                     >
-                      <span className="sr-only">Actions</span>
+                      <span>Actions</span>
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
                   {products.map((product) => {
                     const productCategory = categories.find(
-                      (category) => category.id === product.category
+                      (category) => category.id === product.categoryId
                     ); // Find the category name based on the categoryId
 
                     return (
@@ -189,28 +189,31 @@ export default function ProductsPage() {
                           </div>
                         </td>
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-  {/* Find category name by categoryId */}
-  {product.categoryId
-    ? categories.find((category) => category.id === product.categoryId)?.name || "Unknown"
-    : "Unknown"}
-</td>
-
+                          {/* Find category name by categoryId */}
+                          {product.categoryId
+                            ? categories.find(
+                                (category) => category.id === product.categoryId
+                              )?.name || "Unknown"
+                            : "Unknown"}
+                        </td>
 
                         <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          ${product.price}
+                          Rs.{product.price}
                         </td>
-                        <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                        <td className="relative whitespace-nowrap py-4 flex justify-center pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                           <button
                             onClick={() => handleEdit(product.id)} // Trigger edit handler
-                            className="text-indigo-600 hover:text-indigo-900 mr-4"
+                            className="text-indigo-600 hover:text-indigo-900 mr-4 flex items-center gap-2"
                           >
                             <Pencil className="h-5 w-5" />
+                            <span>Edit</span>
                           </button>
                           <button
                             onClick={() => setConfirmDelete(product.id)} // Open delete confirmation modal
-                            className="text-red-600 hover:text-red-900"
+                            className="text-red-600 hover:text-red-900 flex items-center gap-2"
                           >
                             <Trash className="h-5 w-5" />
+                            <span>Delete</span>
                           </button>
                         </td>
                       </tr>
@@ -227,11 +230,11 @@ export default function ProductsPage() {
       {confirmDelete && (
         <div
           className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-          onClick={() => setConfirmDelete(null)} 
+          onClick={() => setConfirmDelete(null)}
         >
           <div
             className="bg-white p-8 rounded-md shadow-lg"
-            onClick={(e) => e.stopPropagation()} 
+            onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg font-semibold text-gray-900">
               Are you sure you want to delete this product?

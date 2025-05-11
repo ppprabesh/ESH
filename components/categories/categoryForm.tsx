@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import { X } from 'lucide-react';
+import axios from 'axios';
 
 interface CategoryFormProps {
   categoryId?: string;
@@ -32,7 +32,7 @@ export function CategoryForm({ categoryId, isEdit }: CategoryFormProps) {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export function CategoryForm({ categoryId, isEdit }: CategoryFormProps) {
       image,
     };
 
-    const url = isEdit ? `/api/admin/categories/${categoryId}` : '/api/admin/categories';
+    const url = isEdit ? `/api/categories/${categoryId}` : '/api/categories';
     const method = isEdit ? 'PUT' : 'POST';
 
     try {
@@ -108,7 +108,7 @@ export function CategoryForm({ categoryId, isEdit }: CategoryFormProps) {
   };
 
   const removeImage = () => {
-    setImage('');
+    setImage(''); // Remove image URL from state
   };
 
   return (
