@@ -11,10 +11,10 @@ export default function Home() {
   return (
     <div className='bg-[bg-[#F8F3D9]]'>
       <HeroSection />
-      <FeaturedProducts />
       <WeSellSlider/>
-      <CardCategories/>
       <YoutubeHomepage />
+      <FeaturedProducts />
+      <CardCategories/>
       <Highlights />
       <Certificates />
     </div>

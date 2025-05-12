@@ -41,7 +41,9 @@ export default function CardCategories() {
 
   return (
     <div className="my-10">
-      <h2 className="text-center text-2xl font-bold mb-6">Browse Categories</h2>
+      <h2 className="text-center text-4xl font-bold mb-6">Browse Categories</h2>
+      <h2 className="text-center text-lg font-light mb-6">Authentic product categories that reflect the culture, craft, and essence of Nepal.</h2>
+
       <Carousel slides={slides} />
     </div>
   );

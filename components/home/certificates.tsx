@@ -31,7 +31,7 @@ export function Certificates() {
             </div>
             <div className="p-2 bg-transparent text-center">
               <h3 className="text-lg font-semibold text-[#000080]">Registered With</h3>
-              <p className="text-sm text-[#000080] mt-1">Issued: 2023 | Valid through 2025</p>
+              <p className="text-sm text-[#000080] mt-1">Ministry of Industry, Commerce and Supplies</p>
             </div>
           </div>
 
