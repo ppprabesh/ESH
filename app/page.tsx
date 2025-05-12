@@ -13,7 +13,7 @@ export default function Home() {
       <HeroSection />
       <WeSellSlider/>
       <YoutubeHomepage />
-      <FeaturedProducts />
+      {/* <FeaturedProducts /> */}
       <CardCategories/>
       <Highlights />
       <Certificates />

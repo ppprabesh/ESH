@@ -31,7 +31,13 @@ export default function CardCategories() {
     fetchCategories();
   }, []);
 
-  if (loading) return <div className="text-center mt-10">Loading...</div>;
+  if (loading)
+  return (
+    <div className="flex justify-center items-center h-48">
+      <div className="w-12 h-12 border-4 border-indigo-900 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+
 
   const slides = categories.map((cat) => ({
     title: cat.name,
