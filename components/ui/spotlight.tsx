@@ -10,7 +10,8 @@ export const Spotlight = ({ className, fill }: SpotlightProps) => {
   return (
     <svg
       className={cn(
-        "animate-spotlight pointer-events-none absolute z-[1]  h-[169%] w-[138%] lg:w-[84%] opacity-0",
+        // Slower opacity animation applied inline via tailwind-like utility
+        "pointer-events-none absolute z-[1] h-[169%] w-[138%] lg:w-[84%] animate-[pulse_6s_ease-in-out_infinite] opacity-0",
         className
       )}
       xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +25,7 @@ export const Spotlight = ({ className, fill }: SpotlightProps) => {
           rx="1924.71"
           ry="273.501"
           transform="matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)"
-          fill={fill || "white"}
+          fill={fill || "#3f3fff"} // Slightly darker navy-blue
           fillOpacity="0.21"
         ></ellipse>
       </g>
@@ -53,4 +54,4 @@ export const Spotlight = ({ className, fill }: SpotlightProps) => {
       </defs>
     </svg>
   );
-}; 
+};
