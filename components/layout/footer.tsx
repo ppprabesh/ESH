@@ -4,7 +4,7 @@ import { Mail, MapPin, Phone, Store } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="bg-[#F8F3D9] py-12 border-t border-border">
+    <footer className="bg-[#F8F3D9] py-12 ">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -99,7 +99,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row items-center justify-between">
+        <div className=" mt-8 pt-8 flex flex-col md:flex-row items-center justify-between">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} Everest Souvenir House. All rights reserved.
           </p>

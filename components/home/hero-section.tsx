@@ -2,18 +2,27 @@
 
 import { useKeenSlider } from "keen-slider/react"
 import "keen-slider/keen-slider.min.css"
-
+import { motion } from "framer-motion"
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export function HeroSection() {
   const timer = useRef<NodeJS.Timeout>()
   const [sliderRef, instanceRef] = useKeenSlider({
     loop: true,
     mode: "snap",
+    created: () => {
+      // Reset animations when slider is created/changed
+      setActiveSlide(0)
+    },
+    slideChanged: (s) => {
+      setActiveSlide(s.track.details.rel)
+    }
   })
+
+  const [activeSlide, setActiveSlide] = useState(0)
 
   useEffect(() => {
     timer.current = setInterval(() => {
@@ -45,12 +54,17 @@ export function HeroSection() {
   ]
 
   return (
-    <section className="relative  pt-20 pb-12 md:pt-24 md:pb-20 lg:pt-0 lg:pb-0 overflow-hidden">
+    <section className="relative pt-20 pb-12 md:pt-24 md:pb-20 lg:pt-0 lg:pb-0 overflow-hidden">
       <div ref={sliderRef} className="keen-slider h-[80vh]">
         {slides.map((slide, index) => (
           <div key={index} className="keen-slider__slide relative">
             {/* Background Image with Overlay */}
-            <div className="absolute inset-0 z-0">
+            <motion.div 
+              className="absolute inset-0 z-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: index === activeSlide ? 1 : 0.7 }}
+              transition={{ duration: 0.8 }}
+            >
               <Image
                 src={slide.image}
                 alt={slide.title}
@@ -60,34 +74,78 @@ export function HeroSection() {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-[#F8F3D9]/70" />
-            </div>
+            </motion.div>
 
             {/* Content */}
             <div className="container mx-auto px-4 relative z-10 h-full flex items-center">
-              <div className="max-w-3xl">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
+              <motion.div 
+                className="max-w-3xl"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: index === activeSlide ? 1 : 0,
+                  y: index === activeSlide ? 0 : 20
+                }}
+                transition={{ 
+                  duration: 0.6,
+                  delay: index === activeSlide ? 0.3 : 0
+                }}
+              >
+                <motion.h1 
+                  className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: index === activeSlide ? 1 : 0 }}
+                  transition={{ duration: 0.6, delay: index === activeSlide ? 0.4 : 0 }}
+                >
                   {slide.title}
-                </h1>
-                <p className="text-lg md:text-xl mb-8 text-foreground/85 max-w-2xl">
+                </motion.h1>
+                <motion.p 
+                  className="text-lg md:text-xl mb-8 text-foreground/85 max-w-2xl"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: index === activeSlide ? 1 : 0 }}
+                  transition={{ duration: 0.6, delay: index === activeSlide ? 0.5 : 0 }}
+                >
                   {slide.description}
-                </p>
-                <div className="flex text-black flex-wrap gap-4">
-                  <Button asChild size="lg">
+                </motion.p>
+                <motion.div 
+                  className="flex text-black flex-wrap gap-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: index === activeSlide ? 1 : 0 }}
+                  transition={{ duration: 0.6, delay: index === activeSlide ? 0.6 : 0 }}
+                >
+                  <Button asChild size="lg" className="hover:scale-105 transition-transform">
                     <Link href="/products">
                       Explore Collection
                     </Link>
                   </Button>
-                  <Button>
-                    <Link href="/about" >
+                  <Button className="hover:scale-105 transition-transform">
+                    <Link href="/about">
                       Our Story
                     </Link>
                   </Button> 
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Navigation Dots */}
+      <motion.div 
+        className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+      >
+        {slides.map((_, idx) => (
+          <motion.button
+            key={idx}
+            className={`w-3 h-3 rounded-full ${idx === activeSlide ? 'bg-[#000080]' : 'bg-[#000080]/30'}`}
+            onClick={() => instanceRef.current?.moveToIdx(idx)}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.9 }}
+          />
+        ))}
+      </motion.div>
     </section>
   )
 }
