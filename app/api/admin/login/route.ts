@@ -1,5 +1,6 @@
+// app/api/admin/login/route.ts
+
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
@@ -11,10 +12,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { username, password } = body;
 
-    console.log('Login attempt for username:', username);
-
     if (!username || !password) {
-      console.log('Missing username or password');
       return NextResponse.json(
         { error: 'Username and password are required' },
         { status: 400 }
@@ -22,69 +20,43 @@ export async function POST(request: Request) {
     }
 
     // Find admin by username
-    let admin;
-    try {
-      admin = await prisma.admin.findUnique({
-        where: { username },
-      });
-    } catch (error) {
-      console.error('Database error:', error);
-      return NextResponse.json(
-        { error: 'Database error occurred' },
-        { status: 500 }
-      );
-    }
+    const admin = await prisma.admin.findUnique({
+      where: { username },
+    });
 
     if (!admin) {
-      console.log('Admin not found');
       return NextResponse.json(
         { error: 'Invalid username or password' },
         { status: 401 }
       );
     }
-
-    console.log('Admin found, comparing passwords...');
 
     // Compare passwords
-    let isValid;
-    try {
-      isValid = await compare(password, admin.password);
-    } catch (error) {
-      console.error('Password comparison error:', error);
-      return NextResponse.json(
-        { error: 'Invalid username or password' },
-        { status: 401 }
-      );
-    }
-
+    const isValid = await compare(password, admin.password);
     if (!isValid) {
-      console.log('Password comparison failed');
       return NextResponse.json(
         { error: 'Invalid username or password' },
         { status: 401 }
       );
     }
-
-    console.log('Password comparison successful, generating token...');
 
     // Generate JWT token
     const token = sign(
-      { 
+      {
         id: admin.id,
         username: admin.username,
-        role: 'admin'
+        role: 'admin',
       },
       JWT_SECRET,
       { expiresIn: '7d' }
     );
 
-    // Create response with success message
+    // Create response and set cookie
     const response = NextResponse.json(
       { message: 'Login successful' },
       { status: 200 }
     );
 
-    // Set cookie in the response
     response.cookies.set({
       name: 'admin-token',
       value: token,
@@ -103,4 +75,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}
