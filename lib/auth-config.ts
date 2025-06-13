@@ -46,7 +46,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user = session.user || {};
-        session.user.id = token.id; // No error here
+        session.user.id = String(token.id); // Cast to string to fix type error
       }
       return session;
     }

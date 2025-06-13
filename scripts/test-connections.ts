@@ -1,4 +1,4 @@
-import { imagekit } from '../lib/imagekit.js'
+import imagekit from '../lib/imagekit.js'
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()

@@ -6,8 +6,9 @@ import { useRef, useState } from "react"
 import Slider from "react-slick"
 import "slick-carousel/slick/slick-theme.css"
 import "slick-carousel/slick/slick.css"
-import { renderStars } from "./RenderStars"
+
 import { Icon } from "@iconify/react/dist/iconify.js"
+import { renderStars } from "./RenderStars"
 
 
 // import { Star } from "lucide-react"

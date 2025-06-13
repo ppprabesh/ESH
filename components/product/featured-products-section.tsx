@@ -1,6 +1,6 @@
-import { ProductCard } from './product-card'
-import { Product } from '@/types'
+
 import { products } from '@/data/productData'
+import ProductCard from './product-card'
 
 export function FeaturedProductsSection() {
   const featuredProducts = products.filter(product => product.featured)
@@ -24,9 +24,10 @@ export function FeaturedProductsSection() {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 px-2">
           {featuredProducts.map((product, index) => (
             <ProductCard
+           
               key={product.id}
               product={product}
-              priority={index < 4}
+              // priority={index < 4}
             />
           ))}
         </div>

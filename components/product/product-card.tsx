@@ -8,10 +8,10 @@ interface ProductCardProps {
     price: number;
     images: string[];
   };
-  onClick: () => void;
+  onClick?: () => void;
 }
 
-export default function ProductCard({ product, onClick }: ProductCardProps) {
+export default function ProductCard({ product, onClick}: ProductCardProps) {
   return (
     <Card
       isPressable

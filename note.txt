@@ -1,2 +1,42 @@
 https://wunderbucket.io/?ref=landingfolio
 #F8F3D9
+google console
+meta data for each page.tsx , layout.tsx
+error.tsx , loading , robot.txt = > web crawler
+all info in data/info.ts and importing data instead of hardcoded everywhere.
+
+
+//meta data sample : export const metadata: Metadata = {
+    title: "Notify Nepal",
+    description:
+        "Notify Nepal - Latest news and updates from Nepal in English and Nepali",
+    openGraph: {
+        type: "website",
+        locale: "ne_NP",
+        alternateLocale: "en_US",
+        title: "Notify Nepal - Latest News Portal",
+        description:
+            "Stay updated with the latest news and events from Nepal in both English and Nepali languages",
+        siteName: "Notify Nepal",
+        url: "https://notifynepal.com/",
+        images: [
+            {
+                url: "/og-image.jpg",
+                width: 1200,
+                height: 630,
+                alt: "Notify Nepal News Portal",
+            },
+        ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Notify Nepal - Latest News Portal",
+        description:
+            "Stay updated with the latest news and events from Nepal in both English and Nepali languages",
+        images: ["/og-image.jpg"],
+    },
+
+    keywords:
+        "nepal, news, nepali news, english news, nepal updates, nepal latest",
+    metadataBase: new URL("https://notifynepal.com"/),
+};
